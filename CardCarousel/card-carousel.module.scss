@@ -1,0 +1,108 @@
+$rlAlphaMask: linear-gradient(
+  270deg,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 1) 10%,
+  rgba(0, 0, 0, 1) 96%,
+  rgba(0, 0, 0, 0) 100%
+);
+
+.scrollContainer {
+  position: relative;
+  display: flex;
+  z-index: 1;
+  gap: 1rem;
+}
+
+.mainContainer {
+  scroll-snap-type: x mandatory;
+  padding-right: 100dvw;
+
+  overflow-x: scroll;
+  overflow-y: hidden;
+  position: relative;
+  display: flex;
+  gap: 5rem;
+
+  mask-mode: alpha;
+  mask-image: $rlAlphaMask;
+
+  .card {
+    scroll-snap-align: start;
+    scroll-margin-left: var(--scrollMarginLeft, 25dvw);
+  }
+
+  *:global(".gcollective-BaseCard-root") {
+    width: 100%;
+  }
+
+  // Simulate calculated styles before useEffects fire
+  // Use layout effect?
+  &[data-ready="false"] {
+    overflow: hidden !important;
+
+    .card:not(:first-child) {
+      transform: scale(0.92) !important;
+      transform-origin: right center;
+      opacity: 1;
+    }
+  }
+
+  .sideBar {
+    position: sticky;
+    z-index: 2;
+
+    left: 0;
+
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+
+    padding: 1.5rem 1.5rem 1.5rem 4rem;
+    min-width: min(100dvw, 36rem);
+
+    .sideBarContent {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 80rem) {
+    max-width: 100dvw;
+    margin: 0;
+
+    padding: 4rem calc(var(--mobile-margin) / 2) 0;
+
+    mask-image: linear-gradient(
+      270deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 10%,
+      rgba(0, 0, 0, 1) 90%,
+      rgba(0, 0, 0, 0) 100%
+    );
+
+    .card {
+      max-width: calc(100dvw - calc(var(--mobile-margin)));
+      width: calc(100dvw - calc(var(--mobile-margin)));
+      max-height: 60vh;
+      height: auto;
+
+      scroll-snap-align: center;
+      overflow: hidden;
+
+      .cardContent {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .sideBar {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 80rem) {
+  .mobileOnly {
+    display: none !important;
+  }
+}
